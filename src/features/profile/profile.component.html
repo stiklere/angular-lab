@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="form">
+
+    <mat-form-field>
+        <mat-label>First name</mat-label>
+        <input matInput formControlName="firstName">
+
+        @if (form.controls.firstName.hasError('required')) {
+        <mat-error>First name is <strong>required</strong></mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Last name</mat-label>
+        <input matInput formControlName="lastName">
+
+        @if (form.controls.lastName.hasError('required')) {
+        <mat-error>Last name is <strong>required</strong></mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+
+        @if (form.controls.email.hasError('required')) {
+        <mat-error>Email is <strong>required</strong></mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Phone number</mat-label>
+        <input matInput formControlName="phoneNumber">
+
+        @if (form.controls.phoneNumber.hasError('required')) {
+        <mat-error>Phone number is <strong>required</strong></mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Role</mat-label>
+        <select matNativeControl formControlName="role">
+            @for(role of roleOptions; track role) {
+            <option [value]="role">{{role}}</option>
+            }
+        </select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isSubscribed">Subscribe to newsletter</mat-checkbox>
+
+    <button mat-raised-button type="submit">Save</button>
+</form>
