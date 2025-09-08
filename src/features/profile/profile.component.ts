@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { customValidators } from './validators/validators';
 import { FormKeys } from './form-control-keys.const';
 import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 
 type ProfileForm = {
   [FormKeys.firstName]: FormControl<string>;
@@ -39,6 +40,7 @@ enum ProfileRole {
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatSelectModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -55,14 +57,14 @@ export class ProfileComponent {
     [FormKeys.lastName]: this.formBuilder.nonNullable.control('', [
       Validators.required,
     ]),
-    [FormKeys.email]: this.formBuilder.nonNullable.control('', [
-      Validators.required,
-      customValidators(FormKeys.email),
-    ]),
-    [FormKeys.phoneNumber]: this.formBuilder.nonNullable.control('', [
-      Validators.required,
-      customValidators(FormKeys.phoneNumber),
-    ]),
+    [FormKeys.email]: this.formBuilder.nonNullable.control('', {
+      validators: [Validators.required, customValidators(FormKeys.email)],
+      updateOn: 'blur',
+    }),
+    [FormKeys.phoneNumber]: this.formBuilder.nonNullable.control('', {
+      validators: [Validators.required, customValidators(FormKeys.phoneNumber)],
+      updateOn: 'blur',
+    }),
     [FormKeys.role]: this.formBuilder.nonNullable.control(
       ProfileRole.Developer,
       [Validators.required]

@@ -14,7 +14,7 @@
 
     <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email">
+        <input matInput type="email" formControlName="email">
 
         @if(form.controls.email.errors?.['email']) {
         <mat-error>{{form.controls.email.errors?.['email'].message}}</mat-error>
@@ -32,11 +32,12 @@
 
     <mat-form-field>
         <mat-label>Role</mat-label>
-        <select matNativeControl formControlName="role">
+        <mat-select formControlName="role">
             @for(role of roleOptions; track role) {
-            <option [value]="role">{{role}}</option>
+            <mat-option [value]="role">{{role}}</mat-option>
             }
-        </select>
+
+        </mat-select>
     </mat-form-field>
 
     <mat-checkbox formControlName="isSubscribed">Subscribe to newsletter</mat-checkbox>
