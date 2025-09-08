@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -10,15 +10,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { customValidators } from './validators/validators';
+import { FormKeys } from './form-control-keys.const';
+import { CommonModule } from '@angular/common';
 
-interface ProfileForm {
-  firstName: FormControl<string>;
-  lastName: FormControl<string>;
-  email: FormControl<string>;
-  phoneNumber: FormControl<string>;
-  role: FormControl<ProfileRole>;
-  isSubscribed: FormControl<boolean>;
-}
+type ProfileForm = {
+  [FormKeys.firstName]: FormControl<string>;
+  [FormKeys.lastName]: FormControl<string>;
+  [FormKeys.email]: FormControl<string>;
+  [FormKeys.phoneNumber]: FormControl<string>;
+  [FormKeys.role]: FormControl<ProfileRole>;
+  [FormKeys.isSubscribed]: FormControl<boolean>;
+};
 
 enum ProfileRole {
   Developer = 'developer',
@@ -29,6 +32,7 @@ enum ProfileRole {
   selector: 'app-profile',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -45,18 +49,25 @@ export class ProfileComponent {
   private readonly formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.group<ProfileForm>({
-    firstName: this.formBuilder.nonNullable.control('', [Validators.required]),
-    lastName: this.formBuilder.nonNullable.control('', [Validators.required]),
-    email: this.formBuilder.nonNullable.control('', [Validators.required]),
-    phoneNumber: this.formBuilder.nonNullable.control('', [
+    [FormKeys.firstName]: this.formBuilder.nonNullable.control('', [
       Validators.required,
     ]),
-    role: this.formBuilder.nonNullable.control(ProfileRole.Developer, [
+    [FormKeys.lastName]: this.formBuilder.nonNullable.control('', [
       Validators.required,
     ]),
-    isSubscribed: this.formBuilder.nonNullable.control(true, [
+    [FormKeys.email]: this.formBuilder.nonNullable.control('', [
       Validators.required,
+      customValidators(FormKeys.email),
     ]),
+    [FormKeys.phoneNumber]: this.formBuilder.nonNullable.control('', [
+      Validators.required,
+      customValidators(FormKeys.phoneNumber),
+    ]),
+    [FormKeys.role]: this.formBuilder.nonNullable.control(
+      ProfileRole.Developer,
+      [Validators.required]
+    ),
+    [FormKeys.isSubscribed]: this.formBuilder.nonNullable.control(true),
   });
 
   submitForm(): void {
